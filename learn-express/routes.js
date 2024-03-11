@@ -43,6 +43,7 @@ router.get("/blogs/:id", async (req, res) => {
   }
 });
 
+
 // Update blog
 router.patch("/blogs/:id", async (req, res) => {
   try {
