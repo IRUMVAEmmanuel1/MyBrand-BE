@@ -1,15 +1,15 @@
 const express = require("express");
-const Post = require("./models/Blog");
+const Blog = require("./models/Blog");
 
 const router = express.Router();
 
-// Get all posts
+// Get all blogs
 router.get("/blogs", async (req, res) => {
   try {
-    const posts = await Post.find();
-    res.send(posts);
+    const blogs = await Blog.find();
+    res.send(blogs);
   } catch (error) {
-    console.error("Error fetching posts:", error);
+    console.error("Error fetching blogs:", error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -17,7 +17,7 @@ router.get("/blogs", async (req, res) => {
 // Create post
 router.post("/blogs", async (req, res) => {
   try {
-    const post = new Post({
+    const post = new Blog({
       title: req.body.title,
       content: req.body.content,
     });
