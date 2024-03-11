@@ -1,3 +1,4 @@
+// routes.js
 const express = require("express");
 const Blog = require("./models/Blog");
 
@@ -17,10 +18,8 @@ router.get("/blogs", async (req, res) => {
 // Create blog
 router.post("/blogs", async (req, res) => {
   try {
-    const blog = new Blog({
-      title: req.body.title,
-      content: req.body.content,
-    });
+    const { title, content, image } = req.body;
+    const blog = new Blog({ title, content, image });
     await blog.save();
     res.send(blog);
   } catch (error) {
@@ -57,6 +56,9 @@ router.patch("/blogs/:id", async (req, res) => {
     }
     if (req.body.content) {
       blog.content = req.body.content;
+    }
+    if (req.body.image) {
+      blog.image = req.body.image;
     }
     await blog.save();
     res.send(blog);
