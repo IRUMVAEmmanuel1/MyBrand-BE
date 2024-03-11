@@ -14,7 +14,7 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
-// Create post
+// Create blog
 router.post("/blogs", async (req, res) => {
   try {
     const blog = new Blog({
@@ -24,12 +24,12 @@ router.post("/blogs", async (req, res) => {
     await blog.save();
     res.send(blog);
   } catch (error) {
-    console.error("Error creating post:", error);
+    console.error("Error creating blog:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Get individual post
+// Get individual blog
 router.get("/blogs/:id", async (req, res) => {
   try {
     const blog = await Blog.findOne({ _id: req.params.id });
@@ -39,21 +39,21 @@ router.get("/blogs/:id", async (req, res) => {
     }
     res.send(blog);
   } catch (error) {
-    console.error("Error fetching post:", error);
+    console.error("Error fetching blog:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Update post
+// Update blog
 router.patch("/blogs/:id", async (req, res) => {
   try {
-    const blog = await Post.findOne({ _id: req.params.id });
+    const blog = await Blog.findOne({ _id: req.params.id });
     if (!blog) {
-      res.status(404).send({ error: "Post not found" });
+      res.status(404).send({ error: "Blog not found" });
       return;
     }
     if (req.body.title) {
-      post.title = req.body.title;
+      blog.title = req.body.title;
     }
     if (req.body.content) {
       blog.content = req.body.content;
@@ -61,23 +61,23 @@ router.patch("/blogs/:id", async (req, res) => {
     await blog.save();
     res.send(blog);
   } catch (error) {
-    console.error("Error updating post:", error);
+    console.error("Error updating blog:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Delete post
+// Delete blog
 router.delete("/blogs/:id", async (req, res) => {
   try {
     const blog = await Blog.findOne({ _id: req.params.id });
     if (!blog) {
-      res.status(404).send({ error: "Post not found" });
+      res.status(404).send({ error: "Blog not found" });
       return;
     }
     await Blog.deleteOne({ _id: req.params.id });
     res.status(204).send();
   } catch (error) {
-    console.error("Error deleting post:", error);
+    console.error("Error deleting blog:", error);
     res.status(500).send("Internal Server Error");
   }
 });
