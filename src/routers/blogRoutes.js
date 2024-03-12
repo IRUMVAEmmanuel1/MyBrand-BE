@@ -1,11 +1,9 @@
-// routes.js
 const express = require("express");
-const Blog = require("./models/Blog");
-
 const router = express.Router();
+const Blog = require("../models/Blog");
 
 // Get all blogs
-router.get("/blogs", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find();
     res.send(blogs);
@@ -15,23 +13,23 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
-// Create blog
-router.post("/blogs", async (req, res) => {
+// Create a new blog
+router.post("/", async (req, res) => {
   try {
     const { title, content, image } = req.body;
     const blog = new Blog({ title, content, image });
     await blog.save();
-    res.send(blog);
+    res.status(201).send(blog); // 201 status code for resource created
   } catch (error) {
     console.error("Error creating blog:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// Get individual blog
-router.get("/blogs/:id", async (req, res) => {
+// Get an individual blog by ID
+router.get("/:id", async (req, res) => {
   try {
-    const blog = await Blog.findOne({ _id: req.params.id });
+    const blog = await Blog.findById(req.params.id);
     if (!blog) {
       res.status(404).send({ error: "Blog not found" });
       return;
@@ -43,25 +41,17 @@ router.get("/blogs/:id", async (req, res) => {
   }
 });
 
-
-// Update blog
-router.patch("/blogs/:id", async (req, res) => {
+// Update an existing blog
+router.patch("/:id", async (req, res) => {
   try {
-    const blog = await Blog.findOne({ _id: req.params.id });
+    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // Return the updated blog post
+      runValidators: true, 
+    });
     if (!blog) {
       res.status(404).send({ error: "Blog not found" });
       return;
     }
-    if (req.body.title) {
-      blog.title = req.body.title;
-    }
-    if (req.body.content) {
-      blog.content = req.body.content;
-    }
-    if (req.body.image) {
-      blog.image = req.body.image;
-    }
-    await blog.save();
     res.send(blog);
   } catch (error) {
     console.error("Error updating blog:", error);
@@ -69,16 +59,15 @@ router.patch("/blogs/:id", async (req, res) => {
   }
 });
 
-// Delete blog
-router.delete("/blogs/:id", async (req, res) => {
+// Delete a blog by ID
+router.delete("/:id", async (req, res) => {
   try {
-    const blog = await Blog.findOne({ _id: req.params.id });
+    const blog = await Blog.findByIdAndDelete(req.params.id);
     if (!blog) {
       res.status(404).send({ error: "Blog not found" });
       return;
     }
-    await Blog.deleteOne({ _id: req.params.id });
-    res.status(204).send();
+    res.status(204).send(); // 204 status code for successful deletion
   } catch (error) {
     console.error("Error deleting blog:", error);
     res.status(500).send("Internal Server Error");
