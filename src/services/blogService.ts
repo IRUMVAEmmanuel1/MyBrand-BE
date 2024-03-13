@@ -1,4 +1,4 @@
-// services/blogService.ts
+// src/services/blogService.ts
 import Blog, { IBlog } from '../models/Blog';
 
 export class BlogService {
@@ -41,6 +41,15 @@ export class BlogService {
       }
     } catch (error) {
       throw new Error('Error deleting blog');
+    }
+  }
+
+  static async getBlogById(id: string): Promise<IBlog | null> {
+    try {
+      const blog = await Blog.findById(id);
+      return blog;
+    } catch (error) {
+      throw new Error('Error fetching blog by id');
     }
   }
 }
