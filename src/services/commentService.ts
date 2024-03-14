@@ -1,5 +1,5 @@
 // services/commentService.ts
-import Comment, { IComment } from '../models/comment';
+import Comment, { IComment } from '../models/Comment';
 
 export class CommentService {
   static async getAllComments(): Promise<IComment[]> {
