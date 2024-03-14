@@ -24,27 +24,27 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// // Update comment
-// router.patch('/:id', async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-//     const { content } = req.body;
-//     const updatedComment = await CommentService.updateComment(id, content);
-//     res.json(updatedComment);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Error updating comment' });
-//   }
-// });
+// Update comment
+router.patch('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+    const updatedComment = await CommentService.updateComment(id, content);
+    res.json(updatedComment);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating comment' });
+  }
+});
 
-// // Delete comment
-// router.delete('/:id', async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-//     await CommentService.deleteComment(id);
-//     res.status(204).end();
-//   } catch (error) {
-//     res.status(500).json({ error: 'Error deleting comment' });
-//   }
-// });
+// Delete comment
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await CommentService.deleteComment(id);
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting comment' });
+  }
+});
 
 export default router;
