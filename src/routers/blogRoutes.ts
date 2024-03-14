@@ -1,4 +1,3 @@
-// src/routes/blogRoutes.ts
 import express, { Request, Response } from 'express';
 import { BlogService } from '../services/blogService';
 
@@ -9,10 +8,15 @@ router.get('/blogs', async (req: Request, res: Response) => {
   try {
     const blogs = await BlogService.getAllBlogs();
     res.send(blogs);
+   
   } catch (error) {
+    console.log(error)
     res.status(500).send({ error: 'Error fetching blogs' });
+    
   }
 });
+
+
 
 // Create blog
 router.post('/blogs', async (req: Request, res: Response) => {

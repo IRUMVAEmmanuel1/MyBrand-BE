@@ -1,4 +1,3 @@
-// index.ts
 import express from 'express';
 import connectDB from './config/db';
 import blogRoutes from './routers/blogRoutes';

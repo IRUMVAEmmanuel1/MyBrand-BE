@@ -1,4 +1,3 @@
-// src/services/blogService.ts
 import Blog, { IBlog } from '../models/Blog';
 
 export class BlogService {
@@ -7,6 +6,7 @@ export class BlogService {
       const blogs = await Blog.find();
       return blogs;
     } catch (error) {
+      console.log(error)
       throw new Error('Error fetching blogs');
     }
   }
@@ -21,12 +21,9 @@ export class BlogService {
     }
   }
 
-  static async updateBlog(id: string, title: string, content: string, image: string): Promise<IBlog> {
+  static async updateBlog(id: string, title: string, content: string, image: string): Promise<IBlog | null> {
     try {
       const blog = await Blog.findByIdAndUpdate(id, { title, content, image }, { new: true });
-      if (!blog) {
-        throw new Error('Blog not found');
-      }
       return blog;
     } catch (error) {
       throw new Error('Error updating blog');
@@ -35,10 +32,7 @@ export class BlogService {
 
   static async deleteBlog(id: string): Promise<void> {
     try {
-      const blog = await Blog.findByIdAndDelete(id);
-      if (!blog) {
-        throw new Error('Blog not found');
-      }
+      await Blog.findByIdAndDelete(id);
     } catch (error) {
       throw new Error('Error deleting blog');
     }

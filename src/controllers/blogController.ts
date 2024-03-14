@@ -1,4 +1,3 @@
-// controllers/blogController.ts
 import { Request, Response } from 'express';
 import { BlogService } from '../services/blogService';
 
@@ -8,6 +7,21 @@ export const getAllBlogs = async (req: Request, res: Response): Promise<void> =>
     res.send(blogs);
   } catch (error) {
     console.error('Error fetching blogs:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+export const getBlogById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const blog = await BlogService.getBlogById(id);
+    if (!blog) {
+      res.status(404).send({ error: 'Blog not found' });
+      return;
+    }
+    res.send(blog);
+  } catch (error) {
+    console.error('Error fetching blog:', error);
     res.status(500).send('Internal Server Error');
   }
 };
@@ -27,8 +41,8 @@ export const updateBlog = async (req: Request, res: Response): Promise<void> => 
   try {
     const { id } = req.params;
     const { title, content, image } = req.body;
-    const blog = await BlogService.updateBlog(id, title, content, image);
-    res.send(blog);
+    const updatedBlog = await BlogService.updateBlog(id, title, content, image);
+    res.send(updatedBlog);
   } catch (error) {
     console.error('Error updating blog:', error);
     res.status(500).send('Internal Server Error');
