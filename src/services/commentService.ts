@@ -1,25 +1,33 @@
-import { IComment } from '../models/comment';
+import Comment, { IComment } from '../models/comment';
 
 export class CommentService {
+  static async getAllComments(postId: string): Promise<IComment[]> {
+    try {
+      const comments = await Comment.find({ postId });
+      return comments;
+    } catch (error) {
+      throw new Error('Error fetching comments');
+    }
+  }
+
   static async createComment(postId: string, content: string): Promise<IComment> {
     try {
-      // Implement logic to create a new comment for a blog post
-      // Example: const comment = new Comment({ postId, content });
-      const comment: IComment = {}; // Placeholder, replace with actual comment creation logic
+      const comment = new Comment({ postId, content });
+      await comment.save();
       return comment;
     } catch (error) {
       throw new Error('Error creating comment');
     }
   }
 
-  static async deleteComment(id: string): Promise<void> {
+  static async deleteComment(commentId: string): Promise<void> {
     try {
-      // Implement logic to delete a comment by ID
-      // Example: await Comment.findByIdAndDelete(id);
+      const comment = await Comment.findByIdAndDelete(commentId);
+      if (!comment) {
+        throw new Error('Comment not found');
+      }
     } catch (error) {
       throw new Error('Error deleting comment');
     }
   }
-
-  // Add other comment methods as needed
 }
