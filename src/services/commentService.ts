@@ -1,4 +1,3 @@
-// services/commentService.ts
 import Comment, { IComment } from '../models/Comment';
 
 export class CommentService {
@@ -18,6 +17,17 @@ export class CommentService {
       return comment;
     } catch (error) {
       throw new Error('Error creating comment');
+    }
+  }
+
+  static async deleteComment(id: string): Promise<void> {
+    try {
+      const comment = await Comment.findByIdAndDelete(id);
+      if (!comment) {
+        throw new Error('Comment not found');
+      }
+    } catch (error) {
+      throw new Error('Error deleting comment');
     }
   }
 }
